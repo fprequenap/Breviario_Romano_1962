@@ -118,6 +118,7 @@ main{max-width:1040px;margin:0 auto;padding:14px 14px 30px}
 .bi-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
 .bi-grid .es,.inter .es{color:var(--muted)}
 .inter .ln{margin-bottom:.25em}
+.inter .ln:empty{height:.7em}
 .office .hes{font-family:Garamond,serif;font-weight:400;font-style:italic;font-size:.78em;letter-spacing:0;color:var(--muted)}
 .inter .ln .es{display:block;font-size:.86em;line-height:1.38;margin:.05em 0 .35em;padding-left:.7em;border-left:2px solid var(--rule)}
 .blk .es{margin-top:.6em;padding-left:.8em;border-left:2px solid var(--rule);font-size:.9em}
@@ -311,10 +312,11 @@ async function viewHoy(s){
   const pk=$app.querySelector('#pick'); pk.onchange=()=>pk.value&&(location.hash='#/d/'+pk.value);
 }
 
-const tidy=x=>x&&x.replace(/<\/b>\s*<br>/g,'</b>');
+const tidy=x=>x&&x.replace(/<b>([^<\s])<\/b>/g,'<q>$1</q>').replace(/<\/b>\s*<br>/g,'</b>');
 const HEAD=/^\s*(<b>[^<]*<\/b>)\s*(<em>.*?<\/em>)?\s*(?:<br>)?\s*/;
 function splitHead(x){const m=x.match(HEAD);return m?{h:m[1],r:m[2]||'',b:x.slice(m[0].length)}:{h:'',r:'',b:x}}
 function renderPair(la,es){
+  la=tidy(la);es=tidy(es);
   if(S.mode==='la'||!es) return `<div class="sec">${tidy(la)}</div>`;
   if(S.mode==='es') return `<div class="sec">${tidy(es)}</div>`;
   if(matchMedia('(min-width:760px)').matches) return `<div class="sec bi-grid"><div>${tidy(la)}</div><div class="es">${tidy(es)}</div></div>`;
@@ -487,7 +489,7 @@ route(); scheduleNext();
 
 /* ============ Service worker con auto-actualización ============ */
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=851d650e').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
+  navigator.serviceWorker.register('sw.js?v=d994f4af').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
   let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
   navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.url)location.hash=e.data.url.replace(/^.*#/,'#')});
 }
