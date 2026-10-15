@@ -5,7 +5,11 @@
     "Dominus → Señor; Deus → Dios; Dominus Deus → Señor Dios. Nunca «Yahvé» ni «Jehová» (norma de 2008).",
     "Se conserva la pausa central «*» del salmo en el mismo lugar; la flexa «†» no se reproduce en español.",
     "Rúbricas entre paréntesis: (fit reverentia) → (se hace reverencia).",
-    "Mayúscula en pronombres y posesivos referidos a Dios (y a Cristo en los salmos mesiánicos): Tú, Ti, Te, Contigo, Él, Le, Lo, Tu, Tus, Su, Sus, Tuyo, Suyo. Los enclíticos no se capitalizan (alabadle, bendígante). David y el rey del Sal 88 y 131, en minúscula."
+    "Mayúscula en pronombres y posesivos referidos a Dios (y a Cristo en los salmos mesiánicos): Tú, Ti, Te, Contigo, Él, Le, Lo, Tu, Tus, Su, Sus, Tuyo, Suyo. Los enclíticos no se capitalizan (alabadle, bendígante). David y el rey del Sal 88 y 131, en minúscula.",
+    "Himnos: prosa fiel, línea a línea con el verso latino.",
+    "Antífonas: el asterisco de entonación se coloca tras las palabras equivalentes a las latinas que preceden al «*».",
+    "Referencias bíblicas con abreviaturas españolas (Lc, Jn, Eclo, 1 Pe…); títulos «Psalmus N» → «Salmo N».",
+    "Rúbricas en español: {omittitur} → {se omite}; ex Proprio Sanctorum → del Propio de los Santos; ex Commune aut Festo → del Común o de la Fiesta."
   ],
   "terminos": {
     "misericordia": "misericordia",
@@ -48,7 +52,12 @@
     "Alleluia": "Aleluya",
     "Sion": "Sión",
     "Ierusalem": "Jerusalén",
-    "Iacob": "Jacob"
+    "Iacob": "Jacob",
+    "Orémus": "Oremos",
+    "quǽsumus": "Te rogamos",
+    "Per Dóminum nostrum…": "Por nuestro Señor Jesucristo, Tu Hijo, que contigo vive y reina…",
+    "Paráclitus": "Paráclito",
+    "almus (Spíritus)": "vivificador"
   },
   "letras_hebreas_ps118": [
     "Álef",
