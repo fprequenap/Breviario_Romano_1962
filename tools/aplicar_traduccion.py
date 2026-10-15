@@ -23,8 +23,10 @@ def cross(t):
     return t.replace('✠', '<u>✠</u>')
 
 def initial(tag, t):
-    m = re.match(r'^([¡¿«"(]*\w)(.*)$', t, re.S)
-    return '<%s>%s</%s>%s' % (tag, m.group(1), tag, m.group(2)) if m else t
+    # La capitular abarca sólo la letra; los signos iniciales (¡ ¿ « ") quedan fuera
+    # y la letra se pone en mayúscula.
+    m = re.match(r'^([¡¿«"(]*)(\w)(.*)$', t, re.S)
+    return '%s<%s>%s</%s>%s' % (m.group(1), tag, m.group(2).upper(), tag, m.group(3)) if m else t
 
 def build(lat, es):
     """Reconstruye la línea española con el marcado de la línea latina."""
