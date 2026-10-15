@@ -326,6 +326,11 @@ function renderPair(la,es){
   if(a.length===b.length) return `<div class="sec inter">${hd}`+a.map((x,i)=>`<div class="ln">${x}${b[i].trim()?`<span class="es">${b[i]}</span>`:''}</div>`).join('')+`</div>`;
   return `<div class="sec blk">${hd}<div>${A.b}</div><div class="es">${B.b}</div></div>`;
 }
+/* Oraciones antes y después del Oficio divino (Breviarium Romanum) */
+const ANTE=['<b>Oratio ante divinum Officium</b> <em>{flexis genibus}</em><br><i>℣.</i> <q>A</q>peri, Dómine, os meum ad benedicéndum nomen sanctum tuum: munda quoque cor meum ab ómnibus vanis, pervérsis et aliénis cogitatiónibus; intelléctum illúmina, afféctum inflámma, ut digne, atténte ac devóte hoc Offícium recitáre váleam, et exaudíri mérear ante conspéctum divínæ Majestátis tuæ. Per Christum Dóminum nostrum.<br><i>℟.</i> Amen.<br><i>℣.</i> Dómine, in unióne illíus divínæ intentiónis, qua ipse in terris laudes Deo persolvísti, has tibi Horas <em>(vel</em> hanc tibi Horam<em>)</em> persólvo.',
+ '<b>Oración antes del Oficio divino</b> <em>{de rodillas}</em><br><i>℣.</i> <q>A</q>bre, Señor, mi boca para bendecir Tu santo nombre; limpia también mi corazón de todo pensamiento vano, perverso y ajeno; ilumina el entendimiento, inflama el afecto, para que pueda rezar este Oficio digna, atenta y devotamente, y merezca ser escuchado ante la presencia de Tu divina Majestad. Por Cristo nuestro Señor.<br><i>℟.</i> Amén.<br><i>℣.</i> Señor, en unión con aquella divina intención con que Tú mismo tributaste en la tierra alabanzas a Dios, Te ofrezco estas Horas <em>(o bien:</em> esta Hora<em>)</em>.'];
+const POST=['<b>Oratio post divinum Officium</b><br><i>℣.</i> <q>S</q>acrosánctæ et indivíduæ Trinitáti, crucifíxi Dómini nostri Iesu Christi humanitáti, beatíssimæ et gloriosíssimæ sempérque Vírginis Maríæ fecúndæ integritáti, et ómnium Sanctórum universitáti sit sempitérna laus, honor, virtus et glória ab omni creatúra, nobísque remíssio ómnium peccatórum, per infiníta sǽcula sæculórum.<br><i>℟.</i> Amen.<br><i>℣.</i> Beáta víscera Maríæ Vírginis, quæ portavérunt ætérni Patris Fílium.<br><i>℟.</i> Et beáta úbera, quæ lactavérunt Christum Dóminum.<br><em>Et dicitur secreto:</em> Pater noster <em>et</em> Ave María.',
+ '<b>Oración después del Oficio divino</b><br><i>℣.</i> <q>A</q> la sacrosanta e indivisa Trinidad, a la humanidad de nuestro Señor Jesucristo crucificado, a la fecunda integridad de la beatísima y gloriosísima siempre Virgen María y a la universalidad de todos los Santos, sea dada por toda criatura alabanza, honor, poder y gloria sempiterna, y a nosotros la remisión de todos los pecados, por los siglos infinitos de los siglos.<br><i>℟.</i> Amén.<br><i>℣.</i> Bienaventuradas las entrañas de la Virgen María, que llevaron al Hijo del eterno Padre.<br><i>℟.</i> Y bienaventurados los pechos que amamantaron a Cristo el Señor.<br><em>Y se dice en secreto:</em> Padre nuestro <em>y</em> Ave María.'];
 let wakeLock=null;
 async function keepAwake(on){try{if(on&&S.wake&&'wakeLock' in navigator){if(!wakeLock){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>wakeLock=null)}}else if(!on&&wakeLock){await wakeLock.release();wakeLock=null}}catch(e){}}
 
@@ -347,7 +352,7 @@ async function viewHora(s,k){
       ${k==='V'&&d.vt?'<div class="vt">I Vísperas del día siguiente</div>':''}
     </div>
     <div class="modebar">${[['la','Latín'],['bi','Latín · Español'],['es','Español']].map(([m,l])=>`<button data-m="${m}" class="${S.mode===m?'on':''}">${l}</button>`).join('')}</div>
-    <article class="office ${S.verses?'':'noverse'}">${secs.map(([la,es])=>renderPair(la,es)).join('')}</article>
+    <article class="office ${S.verses?'':'noverse'}">${[ANTE,...secs,...(k==='C'?[POST]:[])].map(([la,es])=>renderPair(la,es)).join('')}</article>
     <div class="btns" style="justify-content:center;margin-top:14px"><button class="btn" id="done">${(S.prayed[s]||[]).includes(k)?'✓ Rezada':'Marcar como rezada'}</button></div>
     <div class="endnav"><a href="${prev}">‹ ${i>0?HOURS[i-1].la:'Completorium'}</a><a href="${next}">${i<6?HOURS[i+1].la:'Laudes'} ›</a></div>`;
   $app.innerHTML=html; scrollTo(0,0);
@@ -492,7 +497,7 @@ route(); scheduleNext();
 
 /* ============ Service worker con auto-actualización ============ */
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=dd148202').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
+  navigator.serviceWorker.register('sw.js?v=12d35807').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
   let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
   navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.url)location.hash=e.data.url.replace(/^.*#/,'#')});
 }
