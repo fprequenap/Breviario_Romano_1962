@@ -130,6 +130,7 @@ main{max-width:1040px;margin:0 auto;padding:14px 14px 30px}
 .office q{quotes:none;color:var(--rubric);font-size:1.45em;line-height:.8;font-weight:600}
 .office q::before,.office q::after{content:none}
 .office.noverse s{display:none}
+.preces{display:block;text-align:center;margin:10px auto;padding:10px 14px;max-width:520px;border-radius:12px;background:var(--chip);border:1px solid var(--rule);text-decoration:none;color:var(--rubric);font-family:Capitalis,serif;font-weight:600;font-size:16px}
 .endnav{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
 .endnav a{flex:1;text-align:center;padding:12px;border-radius:12px;background:var(--chip);border:1px solid var(--rule);text-decoration:none;color:var(--ink);font-family:Capitalis,serif;font-weight:600;font-size:18px}
 
@@ -306,7 +307,7 @@ async function viewHoy(s){
       <svg class="bell ${S.on[h.k]?'':'off'}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.8V3.5a1.5 1.5 0 0 0-3 0v.7A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
     </a></li>`;
   }
-  html+=`</ul></div><p class="note" style="text-align:center">Horas diurnas del Breviario Romano según las rúbricas de 1960. Sin Maitines.</p>`;
+  html+=`</ul></div><a class="preces" href="#/oraciones">✠ Oraciones antes y después del Oficio</a><p class="note" style="text-align:center">Horas diurnas del Breviario Romano según las rúbricas de 1960. Sin Maitines.</p>`;
   $app.innerHTML=html;
   $app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>location.hash='#/d/'+b.dataset.go);
   const pk=$app.querySelector('#pick'); pk.onchange=()=>pk.value&&(location.hash='#/d/'+pk.value);
@@ -352,7 +353,9 @@ async function viewHora(s,k){
       ${k==='V'&&d.vt?'<div class="vt">I Vísperas del día siguiente</div>':''}
     </div>
     <div class="modebar">${[['la','Latín'],['bi','Latín · Español'],['es','Español']].map(([m,l])=>`<button data-m="${m}" class="${S.mode===m?'on':''}">${l}</button>`).join('')}</div>
-    <article class="office ${S.verses?'':'noverse'}">${[ANTE,...secs,...(k==='C'?[POST]:[])].map(([la,es])=>renderPair(la,es)).join('')}</article>
+    <a class="preces" href="#/oraciones/ante">✠ Oración antes del Oficio</a>
+    <article class="office ${S.verses?'':'noverse'}">${secs.map(([la,es])=>renderPair(la,es)).join('')}</article>
+    <a class="preces" href="#/oraciones/post">✠ Oración después del Oficio · acción de gracias</a>
     <div class="btns" style="justify-content:center;margin-top:14px"><button class="btn" id="done">${(S.prayed[s]||[]).includes(k)?'✓ Rezada':'Marcar como rezada'}</button></div>
     <div class="endnav"><a href="${prev}">‹ ${i>0?HOURS[i-1].la:'Completorium'}</a><a href="${next}">${i<6?HOURS[i+1].la:'Laudes'} ›</a></div>`;
   $app.innerHTML=html; scrollTo(0,0);
@@ -474,6 +477,15 @@ function viewAjustes(){
 }
 
 /* ============ Router ============ */
+function viewOraciones(which){
+  setTab('');setTop('Oraciones <small>ante et post Officium</small>',true);
+  const blk=(id,t,pair)=>`<h3 id="${id}" style="text-align:center;scroll-margin-top:72px">${t}</h3><article class="office">${renderPair(pair[0],pair[1])}</article>`;
+  $app.innerHTML=`<div class="modebar">${[['la','Latín'],['bi','Latín · Español'],['es','Español']].map(([m,l])=>`<button data-m="${m}" class="${S.mode===m?'on':''}">${l}</button>`).join('')}</div>
+    ${blk('ante','Antes del Oficio',ANTE)}<div style="height:18px"></div>${blk('post','Después del Oficio · acción de gracias',POST)}
+    <div class="endnav"><a href="javascript:history.back()">‹ Volver</a></div>`;
+  $app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;S.save();viewOraciones(which)});
+  const el=which&&document.getElementById(which); el?el.scrollIntoView({block:'start'}):scrollTo(0,0);
+}
 async function route(){
   const p=location.hash.replace(/^#\/?/,'').split('/');
   if(p[0]!=='d'||!p[2])keepAwake(false);
@@ -481,13 +493,14 @@ async function route(){
     if(p[0]==='d'&&p[1]&&p[2])return await viewHora(p[1],p[2]);
     if(p[0]==='d'&&p[1])return await viewHoy(p[1]);
     if(p[0]==='rezar'){location.replace('#/d/'+today()+'/'+currentHour().k);return}
+    if(p[0]==='oraciones')return viewOraciones(p[1]);
     if(p[0]==='avisos')return viewAvisos();
     if(p[0]==='ajustes')return viewAjustes();
     return await viewHoy(today());
   }catch(e){console.error(e);$app.innerHTML=`<div class="card">No se pudo cargar el oficio. Compruebe la conexión la primera vez que abre la aplicación.<p class="note">${esc(String(e.message||e))}</p></div>`}
 }
 addEventListener('hashchange',route);
-document.getElementById('btnBack').onclick=()=>{const p=location.hash.split('/');location.hash=p[2]?'#/d/'+p[2]:'#/'};
+document.getElementById('btnBack').onclick=()=>{const p=location.hash.split('/');if(p[1]==='oraciones'){history.length>1?history.back():location.hash='#/';return}location.hash=p[2]?'#/d/'+p[2]:'#/'};
 document.getElementById('btnTheme').onclick=()=>{S.theme=S.theme==='noche'?'pergamino':'noche';S.save();applyLook()};
 let lastDay=today();
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){scheduleNext();
@@ -497,7 +510,7 @@ route(); scheduleNext();
 
 /* ============ Service worker con auto-actualización ============ */
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=12d35807').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
+  navigator.serviceWorker.register('sw.js?v=e55aed2d').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
   let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
   navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.url)location.hash=e.data.url.replace(/^.*#/,'#')});
 }
