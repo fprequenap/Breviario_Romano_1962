@@ -33,4 +33,4 @@ Breviario Romano, edición típica de 1962 (rúbricas del Código de 1960). Hora
 
 ## Fuentes
 Textos y cómputo litúrgico: proyecto Divinum Officium (github.com/DivinumOfficium, licencia MIT).
-**Atención:** la traducción española de los salmos en esos archivos coincide con la de la Liturgia de las Horas de la Conferencia Episcopal Española (texto con derechos). Para uso privado no plantea problema; para distribución pública conviene sustituirla por una versión de dominio público (p. ej. Torres Amat) o publicar sólo en latín.
+**Atención:** la traducción española de los salmos en esos archivos es traducción propia, todos los derechos reservados sobre la misma, Francisco de Paula Requena Paredes, MMXXVI, AMDG.
