@@ -489,7 +489,7 @@ route(); scheduleNext();
 
 /* ============ Service worker con auto-actualización ============ */
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=b460560d').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
+  navigator.serviceWorker.register('sw.js?v=9552be47').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
   let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
   navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.url)location.hash=e.data.url.replace(/^.*#/,'#')});
 }
