@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Breviarium Romanum</title>
+<meta name="description" content="Breviario Romano 1962 — Horas diurnas, de Laudes a Completas, con avisos.">
+<meta name="theme-color" content="#1B3A5C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Breviarium">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+@font-face{font-family:Garamond;font-weight:400;font-style:normal;font-display:swap;src:url(fonts/eb-garamond-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Garamond;font-weight:400;font-style:normal;font-display:swap;src:url(fonts/eb-garamond-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Garamond;font-weight:400;font-style:italic;font-display:swap;src:url(fonts/eb-garamond-latin-400-italic.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Garamond;font-weight:400;font-style:italic;font-display:swap;src:url(fonts/eb-garamond-latin-ext-400-italic.woff2) format('woff2');unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Garamond;font-weight:600;font-style:normal;font-display:swap;src:url(fonts/eb-garamond-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Garamond;font-weight:600;font-style:normal;font-display:swap;src:url(fonts/eb-garamond-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Capitalis;font-weight:500;font-display:swap;src:url(fonts/cormorant-sc-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:Capitalis;font-weight:600;font-display:swap;src:url(fonts/cormorant-sc-latin-600-normal.woff2) format('woff2')}
+
+:root{
+  --bg:#f5efe0; --paper:#fbf7ec; --ink:#2b241d; --muted:#6f6355; --rule:#d9ccb0;
+  --rubric:#a3171b; --gold:#a8812f; --accent:#1B3A5C; --accent-ink:#fff; --chip:#efe5cf;
+  --shadow:0 1px 2px rgba(60,40,10,.08),0 4px 18px rgba(60,40,10,.06);
+  --fs:19px;
+}
+[data-theme="azul"]{
+  --bg:#e3eef6; --paper:#f3f8fc; --ink:#14263a; --muted:#4f6478; --rule:#bcd2e3;
+  --rubric:#a3171b; --gold:#9a7428; --accent:#1B3A5C; --chip:#d5e8f0;
+  --shadow:0 1px 2px rgba(10,40,70,.08),0 4px 18px rgba(10,40,70,.06);
+}
+[data-theme="noche"]{
+  --bg:#1c2633; --paper:#232f3e; --ink:#e6dccb; --muted:#a69a88; --rule:#3a4757;
+  --rubric:#e58a7a; --gold:#d6b46a; --accent:#c9a45a; --accent-ink:#1c2633; --chip:#2c3a4b;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Garamond,'EB Garamond',Georgia,serif;font-size:var(--fs);line-height:1.5;
+  padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--accent)}
+[data-theme="noche"] a{color:var(--gold)}
+
+/* barra superior */
+.top{position:sticky;top:0;z-index:20;background:var(--accent);color:#fff;padding:calc(env(safe-area-inset-top) + 8px) 14px 8px;
+  display:flex;align-items:center;gap:10px;min-height:52px}
+[data-theme="noche"] .top{background:#141c26;color:var(--ink)}
+.top h1{font-family:Capitalis,serif;font-weight:600;font-size:21px;letter-spacing:.06em;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top h1 small{font-size:14px;opacity:.75;letter-spacing:.04em;margin-left:6px}
+.icon-btn{background:none;border:0;color:inherit;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;cursor:pointer}
+.icon-btn[hidden]{display:none}
+.icon-btn:active{background:rgba(255,255,255,.15)}
+.icon-btn svg{width:24px;height:24px}
+
+/* barra inferior */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--paper);border-top:1px solid var(--rule);
+  display:flex;padding-bottom:env(safe-area-inset-bottom)}
+.tabs a{flex:1;text-align:center;text-decoration:none;color:var(--muted);padding:7px 0 6px;font-size:13px;font-family:system-ui,-apple-system,sans-serif}
+.tabs a svg{display:block;margin:0 auto 1px;width:24px;height:24px}
+.tabs a.on{color:var(--rubric)}
+
+main{max-width:1040px;margin:0 auto;padding:14px 14px 30px}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:16px}
+
+/* Hoy */
+.day-head{text-align:center;padding:18px 14px 14px}
+.day-head .date{font-family:Capitalis,serif;font-size:17px;letter-spacing:.08em;color:var(--muted)}
+.day-head .feast{font-size:1.32em;line-height:1.25;margin:6px 0 4px;font-weight:600}
+.day-head .cls{color:var(--rubric);font-style:italic}
+.day-head .tp{font-size:.82em;color:var(--muted);margin-top:4px}
+.colordot{display:inline-flex;align-items:center;gap:6px;font-size:.78em;color:var(--muted);margin-top:8px;font-family:system-ui,sans-serif}
+.colordot i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.25);display:inline-block}
+.daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 12px}
+.daynav button{background:var(--chip);border:1px solid var(--rule);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:.85em}
+.daynav input{background:var(--chip);border:1px solid var(--rule);border-radius:999px;padding:5px 10px;font-size:.85em;font-family:system-ui,sans-serif}
+
+.now{display:flex;align-items:center;gap:14px;background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:14px 16px;margin-bottom:14px;text-decoration:none;box-shadow:var(--shadow)}
+.now .lbl{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.8}
+.now .h{font-family:Capitalis,serif;font-size:26px;font-weight:600;letter-spacing:.04em;line-height:1.1}
+.now .sub{font-size:.85em;opacity:.85}
+.now .go{margin-left:auto;font-size:28px}
+
+.hours{list-style:none;margin:0;padding:0}
+.hours li a{display:flex;align-items:center;gap:12px;padding:12px 6px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink)}
+.hours li:last-child a{border-bottom:0}
+.hours .t{font-family:system-ui,sans-serif;font-variant-numeric:tabular-nums;font-size:15px;color:var(--muted);width:52px}
+.hours .n{font-family:Capitalis,serif;font-size:21px;font-weight:600;letter-spacing:.03em;flex:1}
+.hours .n small{display:block;font-family:Garamond,serif;font-size:14px;font-weight:400;color:var(--muted);letter-spacing:0}
+.hours .st{font-size:13px;font-family:system-ui,sans-serif;color:var(--muted)}
+.hours li.next a .n{color:var(--rubric)}
+.hours li.done a{opacity:.62}
+.bell{width:18px;height:18px;color:var(--gold)}
+.bell.off{color:var(--rule)}
+
+/* Lector */
+.reader-head{text-align:center;margin:6px 0 16px}
+.reader-head h2{font-family:Capitalis,serif;font-weight:600;font-size:30px;letter-spacing:.06em;color:var(--rubric);margin:0;line-height:1.1}
+.reader-head .es{font-style:italic;color:var(--muted);font-size:.9em}
+.reader-head .feast{margin-top:6px;font-size:.92em}
+.reader-head .vt{font-size:.82em;color:var(--rubric);font-style:italic}
+.hournav{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none;margin-bottom:6px}
+.hournav::-webkit-scrollbar{display:none}
+.hournav a{flex:none;padding:5px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--chip);color:var(--ink);text-decoration:none;font-family:Capitalis,serif;font-size:16px;font-weight:600}
+.hournav a.on{background:var(--rubric);border-color:var(--rubric);color:#fff}
+.modebar{display:flex;justify-content:center;gap:0;margin:0 auto 14px;width:max-content;border:1px solid var(--rule);border-radius:999px;overflow:hidden;font-family:system-ui,sans-serif;font-size:13px}
+.modebar button{background:var(--paper);border:0;padding:6px 14px;cursor:pointer}
+.modebar button.on{background:var(--accent);color:var(--accent-ink)}
+
+.office{background:var(--paper);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:6px 18px 18px}
+.sec{padding:12px 0;border-bottom:1px solid var(--rule)}
+.sec:last-child{border-bottom:0}
+.bi-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.bi-grid .es,.inter .es{color:var(--muted)}
+.inter .ln{margin-bottom:.25em}
+.office .hes{font-family:Garamond,serif;font-weight:400;font-style:italic;font-size:.78em;letter-spacing:0;color:var(--muted)}
+.inter .ln .es{display:block;font-size:.86em;line-height:1.38;margin:.05em 0 .35em;padding-left:.7em;border-left:2px solid var(--rule)}
+.blk .es{margin-top:.6em;padding-left:.8em;border-left:2px solid var(--rule);font-size:.9em}
+.office b{display:block;font-family:Capitalis,serif;font-weight:600;font-size:1.06em;color:var(--rubric);letter-spacing:.05em;margin:.15em 0 .3em}
+.office i{font-style:normal;color:var(--rubric);font-weight:600}
+.office u{text-decoration:none;color:var(--rubric)}
+.office em{color:var(--rubric);font-size:.85em}
+.office s{text-decoration:none;color:var(--muted);font-size:.66em;font-family:system-ui,sans-serif;vertical-align:.18em;margin-right:.15em;opacity:.85}
+.office q{quotes:none;color:var(--rubric);font-size:1.45em;line-height:.8;font-weight:600}
+.office q::before,.office q::after{content:none}
+.office.noverse s{display:none}
+.endnav{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.endnav a{flex:1;text-align:center;padding:12px;border-radius:12px;background:var(--chip);border:1px solid var(--rule);text-decoration:none;color:var(--ink);font-family:Capitalis,serif;font-weight:600;font-size:18px}
+
+/* Ajustes */
+h3{font-family:Capitalis,serif;font-weight:600;letter-spacing:.05em;color:var(--rubric);font-size:22px;margin:22px 4px 8px}
+h3:first-child{margin-top:4px}
+.row{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:0}
+.row label{flex:1}
+.row label.sw{flex:none}
+.row small{display:block;color:var(--muted);font-size:.8em;line-height:1.3}
+.row input[type=time]{background:var(--chip);border:1px solid var(--rule);border-radius:8px;padding:4px 8px;font-family:system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.sw{position:relative;width:46px;height:28px;flex:none}
+.sw input{opacity:0;width:0;height:0}
+.sw span{position:absolute;inset:0;background:var(--rule);border-radius:999px;transition:.2s;cursor:pointer}
+.sw span::after{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.sw input:checked+span{background:var(--rubric)}
+.sw input:checked+span::after{transform:translateX(18px)}
+.seg{display:flex;border:1px solid var(--rule);border-radius:10px;overflow:hidden;font-family:system-ui,sans-serif;font-size:13px}
+.seg button{border:0;background:var(--paper);padding:7px 10px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:11px 16px;cursor:pointer;font-family:system-ui,sans-serif;font-size:15px;text-decoration:none}
+.btn.alt{background:var(--chip);color:var(--ink);border:1px solid var(--rule)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.note{font-size:.84em;color:var(--muted);line-height:1.4;margin:8px 2px 0}
+.status{font-family:system-ui,sans-serif;font-size:13px;padding:8px 12px;border-radius:10px;background:var(--chip);margin-top:10px}
+.prose p{margin:.5em 0}
+.prose{font-size:.95em}
+
+.toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:50;background:var(--accent);color:var(--accent-ink);
+  padding:12px 16px;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;gap:12px;align-items:center;max-width:92vw;font-family:system-ui,sans-serif;font-size:15px}
+.toast a{color:inherit;font-weight:600}
+.loading{text-align:center;color:var(--muted);padding:40px 0;font-style:italic}
+
+@media (max-width:759px){ .bi-grid{grid-template-columns:1fr;gap:6px} main{padding:10px 10px 30px} .office{padding:4px 14px 14px} }
+@media (min-width:760px){ .top h1{font-size:24px} }
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="icon-btn" id="btnBack" aria-label="Volver" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <h1 id="ttl">Breviarium Romanum <small>MCMLXII</small></h1>
+  <button class="icon-btn" id="btnTheme" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</header>
+<main id="app"><div class="loading">Cargando…</div></main>
+<nav class="tabs">
+  <a href="#/" data-t="hoy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M6 8h12"/></svg>Hoy</a>
+  <a href="#/rezar" data-t="rezar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5c3-1 7-1 10 1v14c-3-2-7-2-10-1zM22 5c-3-1-7-1-10 1v14c3-2 7-2 10-1z"/></svg>Rezar</a>
+  <a href="#/avisos" data-t="avisos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>Avisos</a>
+  <a href="#/ajustes" data-t="ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</a>
+</nav>
+
+<script>
+'use strict';
+/* ============ Constantes ============ */
+const HOURS=[
+  {k:'L',la:'Laudes',es:'Laudes',def:'05:30',dur:20},
+  {k:'P',la:'Prima',es:'Prima',def:'07:00',dur:10},
+  {k:'T',la:'Tertia',es:'Tercia',def:'09:00',dur:10},
+  {k:'S',la:'Sexta',es:'Sexta',def:'12:00',dur:10},
+  {k:'N',la:'Nona',es:'Nona',def:'15:00',dur:10},
+  {k:'V',la:'Vesperæ',es:'Vísperas',def:'19:00',dur:20},
+  {k:'C',la:'Completorium',es:'Completas',def:'21:30',dur:15},
+];
+const HK=Object.fromEntries(HOURS.map(h=>[h.k,h]));
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const ROMAN=n=>{const v=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];let s='';for(const[a,b]of v)while(n>=a){s+=b;n-=a}return s};
+
+/* ============ Ajustes persistentes ============ */
+const LS={get(k,d){try{const v=localStorage.getItem('brev.'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+          set(k,v){try{localStorage.setItem('brev.'+k,JSON.stringify(v))}catch(e){}}};
+const S={
+  times:Object.assign(Object.fromEntries(HOURS.map(h=>[h.k,h.def])),LS.get('times',{})),
+  on:Object.assign(Object.fromEntries(HOURS.map(h=>[h.k,true])),LS.get('on',{})),
+  sound:LS.get('sound',true),
+  mode:LS.get('mode','bi'),         // la | bi | es
+  theme:LS.get('theme','pergamino'),
+  fs:LS.get('fs',19),
+  verses:LS.get('verses',true),
+  wake:LS.get('wake',true),
+  prayed:LS.get('prayed',{}),       // {'2026-10-15':['L','P']}
+  save(){LS.set('times',this.times);LS.set('on',this.on);LS.set('sound',this.sound);LS.set('mode',this.mode);
+    LS.set('theme',this.theme);LS.set('fs',this.fs);LS.set('verses',this.verses);LS.set('wake',this.wake);LS.set('prayed',this.prayed)}
+};
+function applyLook(){document.documentElement.dataset.theme=S.theme==='pergamino'?'':S.theme;
+  document.documentElement.style.setProperty('--fs',S.fs+'px');
+  document.querySelector('meta[name=theme-color]').content=S.theme==='noche'?'#141c26':'#1B3A5C'}
+applyLook();
+
+/* ============ Fechas ============ */
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fromIso=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=fromIso(s);d.setDate(d.getDate()+n);return iso(d)};
+const today=()=>iso(new Date());
+const hm2min=t=>{const[h,m]=t.split(':').map(Number);return h*60+m};
+const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const longDate=s=>{const d=fromIso(s);return `${DIAS[d.getDay()]}, ${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`};
+/* hora "actual": la última cuya hora ya ha pasado; antes de Laudes, Laudes */
+function currentHour(){const m=nowMin();let cur=null;for(const h of HOURS){if(hm2min(S.times[h.k])<=m)cur=h}return cur||HOURS[0]}
+function nextHour(){const m=nowMin();for(const h of HOURS){if(hm2min(S.times[h.k])>m)return{h,day:today()}}return{h:HOURS[0],day:addDays(today(),1)}}
+
+/* ============ Color litúrgico (adaptado de Divinum Officium) ============ */
+function litColor(t){
+  if(/Dominica III Adventus|Dominica IV in Quadragesima/.test(t))return['rosa','#d98aa8'];
+  if(/(?:Beat|Sanct)(?:ae|æ) Mari/.test(t)&&!/Vigil/.test(t))return['blanco','#ffffff'];
+  if(/Vigilia Pentecostes|Quattuor Temporum Pentecostes|Decollatione|Martyr|Reliquia/i.test(t))return['rojo','#b3191f'];
+  if(/Defunctorum|Parasceve|Morte/i.test(t))return['negro','#222'];
+  if(/^In Vigilia Ascensionis|^In Vigilia Epiphaniæ/.test(t))return['blanco','#ffffff'];
+  if(/Vigilia|Quattuor|Rogatio|Passion|Palmis|gesim|(?:Majoris )?Hebdomadæ(?: Sanctæ)?|Sabbato Sancto|Dolorum|Ciner|Adventus/i.test(t)&&!/commemoratione|votivum/i.test(t))return['morado','#5b2a7a'];
+  if(/Conversione|Dedicatione|Cathedra|oann|Pasch|Confessor|Ascensio|Cena/i.test(t))return['blanco','#ffffff'];
+  if(/Pentecosten(?!.*infra octavam)|Epiphaniam|post octavam/i.test(t))return['verde','#2f7a3a'];
+  if(/Pentecostes|Evangel|Innocentium|Sanguinis|Cruc|Apostol/i.test(t))return['rojo','#b3191f'];
+  return['blanco','#ffffff'];
+}
+function splitTitle(t){const p=t.split(' ~ ');return{name:p[0],cls:p[1]||''}}
+const CLS={'I. classis':'I clase','II. classis':'II clase','III. classis':'III clase','IV. classis':'IV clase','Commemoratio':'Conmemoración'};
+
+/* ============ Datos ============ */
+const DATA={meta:null,months:{},chunks:{}};
+async function getJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(u+' '+r.status);return r.json()}
+async function meta(){return DATA.meta||(DATA.meta=await getJSON('data/meta.json'))}
+async function getDay(s){
+  const m=await meta(); if(s<m.from||s>m.to)return null;
+  const mk=s.slice(0,7);
+  if(!DATA.months[mk])DATA.months[mk]=getJSON(`data/m-${mk}.json`);
+  return (await DATA.months[mk])[s]||null;
+}
+async function getSections(ids){
+  const m=await meta(); const need=[...new Set(ids.map(i=>Math.floor(i/m.chunk)))];
+  await Promise.all(need.map(c=>DATA.chunks[c]||(DATA.chunks[c]=getJSON(`data/s-${c}.json`))));
+  const res=[]; for(const i of ids){const c=Math.floor(i/m.chunk);res.push((await DATA.chunks[c])[i-c*m.chunk])} return res;
+}
+
+/* ============ Render ============ */
+const $app=document.getElementById('app');
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function setTop(title,back){document.getElementById('ttl').innerHTML=title;document.getElementById('btnBack').hidden=!back}
+function setTab(t){document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.t===t))}
+
+function dayHeader(s,d){
+  const {name,cls}=splitTitle(d.title); const [cn,cc]=litColor(d.title);
+  return `<div class="day-head">
+    <div class="date">${longDate(s)}</div>
+    <div class="feast">${esc(name)}</div>
+    ${cls?`<div class="cls">${esc(cls)}${CLS[cls]?' · '+CLS[cls]:''}</div>`:''}
+    ${d.tp?`<div class="tp">${esc(d.tp)}</div>`:''}
+    <div class="colordot"><i style="background:${cc}"></i>Color ${cn}</div>
+  </div>`;
+}
+async function viewHoy(s){
+  setTab(s===today()?'hoy':'');setTop('Breviarium Romanum <small>MCMLXII</small>',false);
+  const m=await meta(); const d=await getDay(s);
+  if(!d){$app.innerHTML=`<div class="card prose"><p>No hay oficio generado para ${longDate(s)}.</p><p class="note">Fechas disponibles: ${longDate(m.from)} — ${longDate(m.to)}.</p><p><a href="#/">Volver a hoy</a></p></div>`;return}
+  const isToday=s===today(); const nm=nowMin(); const cur=currentHour(); const pr=S.prayed[s]||[];
+  let html=`<div class="daynav"><button data-go="${addDays(s,-1)}">‹ Anterior</button>
+     <input type="date" id="pick" value="${s}" min="${m.from}" max="${m.to}">
+     <button data-go="${addDays(s,1)}">Siguiente ›</button></div>
+    <div class="card" style="padding:0">${dayHeader(s,d)}</div><div style="height:14px"></div>`;
+  if(isToday){
+    const nx=nextHour();
+    html+=`<a class="now" href="#/d/${s}/${cur.k}"><div><div class="lbl">Rezar ahora</div><div class="h">${cur.la}</div>
+      <div class="sub">${cur.es} · ${S.times[cur.k]} — siguiente: ${nx.h.es} a las ${S.times[nx.h.k]}</div></div><div class="go">›</div></a>`;
+  }
+  html+=`<div class="card" style="padding:4px 12px"><ul class="hours">`;
+  for(const h of HOURS){
+    const t=hm2min(S.times[h.k]); const done=pr.includes(h.k);
+    const nxt=isToday&&h.k===nextHour().h.k&&nextHour().day===s;
+    html+=`<li class="${nxt?'next':''} ${done?'done':''}"><a href="#/d/${s}/${h.k}">
+      <span class="t">${S.times[h.k]}</span>
+      <span class="n">${h.la}<small>${h.es!==h.la?h.es:''}${h.es!==h.la&&h.k==='V'&&d.vt?' · ':''}${h.k==='V'&&d.vt?esc(splitTitle(d.vt).name):''}</small></span>
+      <span class="st">${done?'✓':''}</span>
+      <svg class="bell ${S.on[h.k]?'':'off'}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.8V3.5a1.5 1.5 0 0 0-3 0v.7A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
+    </a></li>`;
+  }
+  html+=`</ul></div><p class="note" style="text-align:center">Horas diurnas del Breviario Romano según las rúbricas de 1960. Sin Maitines.</p>`;
+  $app.innerHTML=html;
+  $app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>location.hash='#/d/'+b.dataset.go);
+  const pk=$app.querySelector('#pick'); pk.onchange=()=>pk.value&&(location.hash='#/d/'+pk.value);
+}
+
+const tidy=x=>x&&x.replace(/<\/b>\s*<br>/g,'</b>');
+const HEAD=/^\s*(<b>[^<]*<\/b>)\s*(<em>.*?<\/em>)?\s*(?:<br>)?\s*/;
+function splitHead(x){const m=x.match(HEAD);return m?{h:m[1],r:m[2]||'',b:x.slice(m[0].length)}:{h:'',r:'',b:x}}
+function renderPair(la,es){
+  if(S.mode==='la'||!es) return `<div class="sec">${tidy(la)}</div>`;
+  if(S.mode==='es') return `<div class="sec">${tidy(es)}</div>`;
+  if(matchMedia('(min-width:760px)').matches) return `<div class="sec bi-grid"><div>${tidy(la)}</div><div class="es">${tidy(es)}</div></div>`;
+  const A=splitHead(la), B=splitHead(es);
+  const hd=A.h?`${A.h.replace('</b>',B.h?` <span class="hes">· ${B.h.replace(/<\/?b>/g,'')}</span></b>`:'</b>')}${A.r?A.r+'<br>':''}`:'';
+  const a=A.b.split(/<br>\s*/), b=B.b.split(/<br>\s*/);
+  if(a.length===b.length) return `<div class="sec inter">${hd}`+a.map((x,i)=>`<div class="ln">${x}${b[i].trim()?`<span class="es">${b[i]}</span>`:''}</div>`).join('')+`</div>`;
+  return `<div class="sec blk">${hd}<div>${A.b}</div><div class="es">${B.b}</div></div>`;
+}
+let wakeLock=null;
+async function keepAwake(on){try{if(on&&S.wake&&'wakeLock' in navigator){if(!wakeLock){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>wakeLock=null)}}else if(!on&&wakeLock){await wakeLock.release();wakeLock=null}}catch(e){}}
+
+async function viewHora(s,k){
+  setTab(s===today()?'rezar':'');
+  const h=HK[k]; if(!h){location.hash='#/';return}
+  setTop(`${h.la}${h.es!==h.la?` <small>${h.es}</small>`:""}`,true);
+  $app.innerHTML='<div class="loading">Preparando la hora…</div>';
+  const d=await getDay(s); if(!d||!d[k]){$app.innerHTML='<div class="card">Oficio no disponible para esta fecha.</div>';return}
+  const secs=await getSections(d[k]);
+  const {name}=splitTitle(k==='V'&&d.vt?d.vt:d.title);
+  const i=HOURS.indexOf(h);
+  const prev=i>0?`#/d/${s}/${HOURS[i-1].k}`:`#/d/${addDays(s,-1)}/C`;
+  const next=i<6?`#/d/${s}/${HOURS[i+1].k}`:`#/d/${addDays(s,1)}/L`;
+  let html=`<nav class="hournav">${HOURS.map(x=>`<a href="#/d/${s}/${x.k}" class="${x.k===k?'on':''}">${x.la}</a>`).join('')}</nav>
+    <div class="reader-head"><h2>Ad ${h.k==='V'?'Vesperas':h.k==='C'?'Completorium':h.la}</h2>
+      <div class="es">${h.es} · ${longDate(s)}</div>
+      <div class="feast">${esc(name)}</div>
+      ${k==='V'&&d.vt?'<div class="vt">I Vísperas del día siguiente</div>':''}
+    </div>
+    <div class="modebar">${[['la','Latín'],['bi','Latín · Español'],['es','Español']].map(([m,l])=>`<button data-m="${m}" class="${S.mode===m?'on':''}">${l}</button>`).join('')}</div>
+    <article class="office ${S.verses?'':'noverse'}">${secs.map(([la,es])=>renderPair(la,es)).join('')}</article>
+    <div class="btns" style="justify-content:center;margin-top:14px"><button class="btn" id="done">${(S.prayed[s]||[]).includes(k)?'✓ Rezada':'Marcar como rezada'}</button></div>
+    <div class="endnav"><a href="${prev}">‹ ${i>0?HOURS[i-1].la:'Completorium'}</a><a href="${next}">${i<6?HOURS[i+1].la:'Laudes'} ›</a></div>`;
+  $app.innerHTML=html; scrollTo(0,0);
+  $app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;S.save();viewHora(s,k)});
+  $app.querySelector('#done').onclick=e=>{const a=S.prayed[s]||(S.prayed[s]=[]);if(!a.includes(k))a.push(k);
+    // conservar sólo 60 días
+    const ks=Object.keys(S.prayed).sort();while(ks.length>60)delete S.prayed[ks.shift()];
+    S.save();e.target.textContent='✓ Rezada'};
+  keepAwake(true);
+  const on=$app.querySelector('.hournav .on'); on&&on.scrollIntoView({inline:'center',block:'nearest'});
+}
+
+/* ============ Avisos ============ */
+let timer=null;
+function scheduleNext(){
+  clearTimeout(timer);
+  const now=new Date(); let best=null;
+  for(let dd=0;dd<2&&!best;dd++)for(const h of HOURS){if(!S.on[h.k])continue;
+    const [hh,mm]=S.times[h.k].split(':').map(Number); const t=new Date(now.getFullYear(),now.getMonth(),now.getDate()+dd,hh,mm,0);
+    if(t>now&&(!best||t<best.t))best={t,h}}
+  if(!best)return;
+  const ms=Math.min(best.t-now,2**31-1);
+  timer=setTimeout(()=>{fireAlarm(best.h);setTimeout(scheduleNext,61000)},ms);
+}
+function bell(){
+  try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const ctx=bell.ctx||(bell.ctx=new C());ctx.resume&&ctx.resume();
+    const strike=(t0,f)=>{[1,2.76,5.4,8.9].forEach((r,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f*r;
+      g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime([0.5,0.25,0.12,0.06][i],t0+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t0+3.5/(i+1));
+      o.connect(g).connect(ctx.destination);o.start(t0);o.stop(t0+4)})};
+    const t=ctx.currentTime;strike(t,392);strike(t+1.6,392);strike(t+3.2,392);}catch(e){}
+}
+async function fireAlarm(h){
+  const s=today(); let feast='';try{const d=await getDay(s);if(d)feast=splitTitle(h.k==='V'&&d.vt?d.vt:d.title).name}catch(e){}
+  const title=`${h.la} · ${h.es} — ${S.times[h.k]}`; const url=`#/d/${s}/${h.k}`;
+  if(S.sound)bell();
+  if('Notification' in window&&Notification.permission==='granted'){
+    try{const reg=await navigator.serviceWorker.ready;reg.showNotification(title,{body:feast||'Hora del Oficio divino',tag:'hora-'+h.k,renotify:true,requireInteraction:true,icon:'icon-192.png',badge:'icon-192.png',data:{url}})}catch(e){new Notification(title,{body:feast})}
+  }
+  toast(`<span>🔔 ${h.la} — ${S.times[h.k]}</span><a href="${url}">Rezar</a>`);
+}
+function toast(html,ms=15000){const el=document.createElement('div');el.className='toast';el.innerHTML=html+'<span style="cursor:pointer;opacity:.7" aria-label="cerrar">✕</span>';
+  el.lastChild.onclick=()=>el.remove();el.querySelector('a')&&el.querySelector('a').addEventListener('click',()=>el.remove());document.body.appendChild(el);setTimeout(()=>el.remove(),ms)}
+
+function icsText(){
+  const base=location.href.split('#')[0];
+  const now=new Date(); const st=`${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}`;
+  const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+  let L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Breviarium Romanum MCMLXII//ES','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Breviario Romano'];
+  for(const h of HOURS){ if(!S.on[h.k])continue;
+    const [hh,mm]=S.times[h.k].split(':').map(Number); const end=hh*60+mm+h.dur;
+    L.push('BEGIN:VEVENT',`UID:brev-${h.k}-v2@breviarium`,`DTSTAMP:${stamp}`,
+      `DTSTART:${st}T${pad(hh)}${pad(mm)}00`,`DTEND:${st}T${pad(Math.floor(end/60)%24)}${pad(end%60)}00`,
+      'RRULE:FREQ=DAILY',`SUMMARY:✠ ${h.la}${h.es!==h.la?` (${h.es})`:""}`,`DESCRIPTION:Oficio divino — ${h.es}\\n${base}#/rezar`,`URL:${base}#/rezar`,
+      'TRANSP:TRANSPARENT','BEGIN:VALARM','ACTION:DISPLAY',`DESCRIPTION:${h.la}`,'TRIGGER:PT0M','END:VALARM','END:VEVENT');
+  }
+  L.push('END:VCALENDAR'); return L.join('\r\n');
+}
+function downloadIcs(){const b=new Blob([icsText()],{type:'text/calendar;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='breviario-horas.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
+
+function permText(){if(!('Notification' in window))return'Este navegador no admite notificaciones web.';
+  return{granted:'Notificaciones permitidas.',denied:'Notificaciones bloqueadas: actívelas en los ajustes del navegador para este sitio.',default:'Notificaciones aún no autorizadas.'}[Notification.permission]}
+function isStandalone(){return matchMedia('(display-mode: standalone)').matches||navigator.standalone}
+function viewAvisos(){
+  setTab('avisos');setTop('Avisos <small>Horæ</small>',false);
+  let html=`<h3>Horario</h3><div class="card" style="padding:4px 14px">`;
+  for(const h of HOURS){html+=`<div class="row"><label for="t${h.k}"><span style="font-family:Capitalis,serif;font-weight:600;font-size:19px">${h.la}</span> <small>${h.es!==h.la?h.es:"&nbsp;"}</small></label>
+    <input type="time" id="t${h.k}" value="${S.times[h.k]}" data-k="${h.k}">
+    <label class="sw" title="Aviso"><input type="checkbox" data-on="${h.k}" ${S.on[h.k]?'checked':''}><span></span></label></div>`}
+  html+=`</div><div class="btns"><button class="btn alt" id="reset">Restablecer horario</button></div>
+  <h3>Alarmas del teléfono</h3><div class="card prose">
+    <p>El método fiable, también con la aplicación cerrada: añadir las siete horas al calendario del teléfono como eventos diarios con alarma.</p>
+    <div class="btns"><button class="btn" id="ics">Añadir al calendario (.ics)</button></div>
+    <p class="note">Si cambia el horario, vuelva a importar el archivo y elimine el calendario anterior. En iPhone, el archivo se abre con «Añadir todo». En Android, ábralo con Google Calendar o el calendario del sistema.</p>
+  </div>
+  <h3>Avisos de la aplicación</h3><div class="card">
+    <div class="row"><label>Notificaciones<small>Mientras la aplicación esté abierta o en segundo plano reciente.</small></label><button class="btn alt" id="perm">Permitir</button></div>
+    <div class="row"><label>Campana<small>Tres toques al llegar cada hora (con la aplicación visible).</small></label><label class="sw"><input type="checkbox" id="snd" ${S.sound?'checked':''}><span></span></label></div>
+    <div class="status" id="pst">${permText()}${isStandalone()?'':' · Instale la aplicación en la pantalla de inicio para avisos más estables.'}</div>
+    <div class="btns"><button class="btn alt" id="test">Probar aviso</button></div>
+  </div>`;
+  $app.innerHTML=html;
+  $app.querySelectorAll('input[type=time]').forEach(i=>i.onchange=()=>{if(!i.value)return;S.times[i.dataset.k]=i.value;
+    // mantener orden cronológico
+    S.save();scheduleNext()});
+  $app.querySelectorAll('[data-on]').forEach(i=>i.onchange=()=>{S.on[i.dataset.on]=i.checked;S.save();scheduleNext()});
+  $app.querySelector('#reset').onclick=()=>{HOURS.forEach(h=>S.times[h.k]=h.def);S.save();scheduleNext();viewAvisos()};
+  $app.querySelector('#ics').onclick=downloadIcs;
+  $app.querySelector('#snd').onchange=e=>{S.sound=e.target.checked;S.save();if(S.sound)bell()};
+  $app.querySelector('#perm').onclick=async()=>{if('Notification' in window){await Notification.requestPermission();$app.querySelector('#pst').textContent=permText()}};
+  $app.querySelector('#test').onclick=()=>fireAlarm(currentHour());
+}
+
+function viewAjustes(){
+  setTab('ajustes');setTop('Ajustes',false);
+  const seg=(id,opts,val)=>`<div class="seg" id="${id}">${opts.map(([v,l])=>`<button data-v="${v}" class="${val===v?'on':''}">${l}</button>`).join('')}</div>`;
+  meta().then(m=>{
+  $app.innerHTML=`<h3>Lectura</h3><div class="card">
+    <div class="row"><label>Texto</label>${seg('mode',[['la','Latín'],['bi','Bilingüe'],['es','Español']],S.mode)}</div>
+    <div class="row"><label>Tema</label>${seg('theme',[['pergamino','Pergamino'],['azul','Azul claro'],['noche','Noche']],S.theme)}</div>
+    <div class="row"><label>Tamaño de letra<small id="fsv">${S.fs} px</small></label><input type="range" id="fs" min="15" max="28" value="${S.fs}"></div>
+    <div class="row"><label>Números de versículo</label><label class="sw"><input type="checkbox" id="vs" ${S.verses?'checked':''}><span></span></label></div>
+    <div class="row"><label>Pantalla siempre encendida<small>Durante el rezo de una hora.</small></label><label class="sw"><input type="checkbox" id="wk" ${S.wake?'checked':''}><span></span></label></div>
+  </div>
+  <h3>Acerca de</h3><div class="card prose">
+    <p><b style="font-family:Capitalis,serif;color:var(--rubric)">Breviarium Romanum</b> — edición típica de 1962, rúbricas del Código de 1960. Horas diurnas: Laudes, Prima, Tercia, Sexta, Nona, Vísperas y Completas. Se omiten los Maitines.</p>
+    <p>Oficio calculado para cada día, con su santoral, conmemoraciones, Martirologio en Prima y primeras Vísperas, desde el ${longDate(m.from)} hasta el ${longDate(m.to)}.</p>
+    <p class="note">Textos y cómputo litúrgico: proyecto Divinum Officium (licencia MIT). La traducción española procede de los archivos «Espanol» de ese proyecto; donde falta, se muestra sólo el latín. Funciona sin conexión una vez instalada.</p>
+    <p class="note">Versión de datos ${m.v} · generada ${m.gen}</p>
+  </div>`;
+  const bindSeg=(id,f)=>$app.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{f(b.dataset.v);S.save();applyLook();viewAjustes()});
+  bindSeg('mode',v=>S.mode=v); bindSeg('theme',v=>S.theme=v);
+  const fs=$app.querySelector('#fs'); fs.oninput=()=>{S.fs=+fs.value;$app.querySelector('#fsv').textContent=S.fs+' px';applyLook()}; fs.onchange=()=>S.save();
+  $app.querySelector('#vs').onchange=e=>{S.verses=e.target.checked;S.save()};
+  $app.querySelector('#wk').onchange=e=>{S.wake=e.target.checked;S.save()};
+  });
+}
+
+/* ============ Router ============ */
+async function route(){
+  const p=location.hash.replace(/^#\/?/,'').split('/');
+  if(p[0]!=='d'||!p[2])keepAwake(false);
+  try{
+    if(p[0]==='d'&&p[1]&&p[2])return await viewHora(p[1],p[2]);
+    if(p[0]==='d'&&p[1])return await viewHoy(p[1]);
+    if(p[0]==='rezar'){location.replace('#/d/'+today()+'/'+currentHour().k);return}
+    if(p[0]==='avisos')return viewAvisos();
+    if(p[0]==='ajustes')return viewAjustes();
+    return await viewHoy(today());
+  }catch(e){console.error(e);$app.innerHTML=`<div class="card">No se pudo cargar el oficio. Compruebe la conexión la primera vez que abre la aplicación.<p class="note">${esc(String(e.message||e))}</p></div>`}
+}
+addEventListener('hashchange',route);
+document.getElementById('btnBack').onclick=()=>{const p=location.hash.split('/');location.hash=p[2]?'#/d/'+p[2]:'#/'};
+document.getElementById('btnTheme').onclick=()=>{S.theme=S.theme==='noche'?'pergamino':'noche';S.save();applyLook()};
+let lastDay=today();
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){scheduleNext();
+  if(today()!==lastDay){lastDay=today();route()} if(location.hash.includes('/d/')&&location.hash.split('/').length>3)keepAwake(true)}});
+let lastW=innerWidth;addEventListener('resize',()=>{if((innerWidth>=760)!==(lastW>=760)){lastW=innerWidth;if(location.hash.split('/').length>3)route()}});
+route(); scheduleNext();
+
+/* ============ Service worker con auto-actualización ============ */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js?v=851d650e').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
+  let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
+  navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.url)location.hash=e.data.url.replace(/^.*#/,'#')});
+}
+</script>
+</body>
+</html>
