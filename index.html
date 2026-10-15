@@ -454,7 +454,10 @@ function viewAjustes(){
   <h3>Acerca de</h3><div class="card prose">
     <p><b style="font-family:Capitalis,serif;color:var(--rubric)">Breviarium Romanum</b> — edición típica de 1962, rúbricas del Código de 1960. Horas diurnas: Laudes, Prima, Tercia, Sexta, Nona, Vísperas y Completas. Se omiten los Maitines.</p>
     <p>Oficio calculado para cada día, con su santoral, conmemoraciones, Martirologio en Prima y primeras Vísperas, desde el ${longDate(m.from)} hasta el ${longDate(m.to)}.</p>
-    <p class="note">Texto latino y cómputo litúrgico: proyecto Divinum Officium (licencia MIT). Traducción española propia, hecha directamente del latín de la Vulgata, en curso por bloques${m.traduccion&&m.traduccion.length?': ya traducido — '+m.traduccion.join('; ')+'.':'.'} El resto se muestra provisionalmente con la versión española de Divinum Officium. Funciona sin conexión una vez instalada.</p>
+    <p class="note">Texto latino y cómputo litúrgico: proyecto Divinum Officium (licencia MIT).</p>
+    <p class="note">Traducción española propia, hecha directamente del latín de la Vulgata: Salterio, Ordinario y partes fijas, Propio del Tiempo y Propio de los Santos.</p>
+    <p class="note">© MMXXVI Francisco de Paula Requena Paredes · A.M.G.D.</p>
+    <p class="note">Funciona sin conexión una vez instalada.</p>
     <p class="note">Versión de datos ${m.v} · generada ${m.gen}</p>
   </div>`;
   const bindSeg=(id,f)=>$app.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{f(b.dataset.v);S.save();applyLook();viewAjustes()});
@@ -489,7 +492,7 @@ route(); scheduleNext();
 
 /* ============ Service worker con auto-actualización ============ */
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=9552be47').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
+  navigator.serviceWorker.register('sw.js?v=dd148202').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
   let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
   navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.url)location.hash=e.data.url.replace(/^.*#/,'#')});
 }
