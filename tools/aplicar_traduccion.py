@@ -4,6 +4,9 @@
   (número de verso, etiquetas Ant./℣./℟., capitulares, cabeceras, rúbricas, ✠)
   se reconstruye a partir de la línea latina.
 - "html": línea latina normalizada -> línea española con su marcado completo.
+- "mariano": como "lineas", pero solo en secciones usadas exclusivamente en
+  oficios de la Santísima Virgen o que La nombran expresamente (versículos compartidos con el Común de
+  Vírgenes: allí minúscula, aquí mayúscula reverencial).
 Idempotente. Uso: aplicar_traduccion.py <raiz_app>"""
 import json, re, glob, os, sys
 ROOT = sys.argv[1] if len(sys.argv) > 1 else '.'
@@ -52,15 +55,45 @@ def build(lat, es):
         return lead + '<s>%s</s>' % es
     return lead + cross(es)
 
-D = {}; H = {}
+D = {}; H = {}; M = {}
 for f in sorted(glob.glob(os.path.join(ROOT, 'trad', '*.json'))):
     if f.endswith('glosario.json'): continue
     j = json.load(open(f, encoding='utf-8'))
-    D.update(j.get('lineas', {})); H.update(j.get('html', {}))
+    D.update(j.get('lineas', {})); H.update(j.get('html', {})); M.update(j.get('mariano', {}))
 
-def tr(l):
+# Secciones exclusivamente marianas (todos los días que las usan son de la Virgen)
+from collections import defaultdict
+MT = re.compile(r'Beatæ Mariæ Virginis|B\.M\.V\.|Sanctæ Mariæ')
+NOMT = re.compile(r'^S{1,2}s?\. (?!Nominis)')
+CHUNK = json.load(open(os.path.join(ROOT, 'data', 'meta.json'), encoding='utf-8'))['chunk']
+import datetime
+_days = {}
+for f in glob.glob(os.path.join(ROOT, 'data', 'm-*.json')):
+    for d, v in json.load(open(f, encoding='utf-8')).items():
+        _days[datetime.date.fromisoformat(d)] = v
+def _ismar(v):
+    return bool(v) and bool(MT.search(v['title'])) and not NOMT.match(v['title'])
+_ref = defaultdict(list)
+for dt, v in _days.items():
+    mar = _ismar(v)
+    marv = mar or _ismar(_days.get(dt + datetime.timedelta(days=1)))  # I Vísperas de la Virgen
+    for h in 'LPTSNVC':
+        for sid in v.get(h, []): _ref[sid].append(marv if h in 'VC' else mar)
+_noref = defaultdict(set)
+for f in glob.glob(os.path.join(ROOT, 'data', 'm-*.json')):
+    for v in json.load(open(f, encoding='utf-8')).values():
+        for h in 'LPTSNVC':
+            for sid in v.get(h, []): _noref[sid].add(v['title'])
+MANCLA = re.compile(r'\bMarí(?:a|æ|am)\b(?! Magdal)|Génetrix|Genetrícis')
+EXCL = re.compile(r'Annæ|Joachim|Magdal')
+MARIAN = {sid for sid, l in _ref.items() if l and all(l)}
+def _marian_text(sid, la):
+    return bool(MANCLA.search(la)) and not any(EXCL.search(t) for t in _noref.get(sid, ()))
+
+def tr(l, mar=False):
     k = norm(l)
     if not k: return l if not l.strip() else None
+    if mar and k in M: return build(l, M[k])
     if k in H:
         return re.match(r'^\s*', l).group(0) + H[k].strip()
     if k in D: return build(l, D[k])
@@ -69,10 +102,12 @@ def tr(l):
 stats = dict(secciones=0, lineas=0, reconstruidas=0, parciales=0)
 for f in sorted(glob.glob(os.path.join(ROOT, 'data', 's-*.json')), key=lambda p: int(re.findall(r'(\d+)\.json', p)[0])):
     secs = json.load(open(f, encoding='utf-8')); ch = False
+    K = int(re.findall(r'(\d+)\.json', f)[0])
     for n, (la, es) in enumerate(secs):
+        mar = (K * CHUNK + n) in MARIAN or _marian_text(K * CHUNK + n, la)
         if la.startswith('<b>Martyrologium'): continue  # bloque propio (sesiones 5-7)
         L = la.split('<br>'); E = es.split('<br>') if es else []
-        T = [tr(l) for l in L]
+        T = [tr(l, mar) for l in L]
         if all(t is None for t in T): continue
         if len(L) == len(E):
             newE = [t if t is not None else e for t, e in zip(T, E)]
