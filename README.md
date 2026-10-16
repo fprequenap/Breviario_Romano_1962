@@ -3,7 +3,7 @@
 Breviario Romano, edición típica de 1962 (rúbricas del Código de 1960). Horas diurnas: Laudes, Prima, Tercia, Sexta, Nona, Vísperas y Completas. Sin Maitines.
 
 ## Contenido
-- Oficio completo y calculado para cada día del **1-oct-2026 al 31-dic-2028** (823 días × 7 horas): temporal, santoral, conmemoraciones, primeras Vísperas, Triduo Sacro, Martirologio en Prima.
+- Oficio completo y calculado para cada día del **1-oct-2026 al 31-dic-2035** (3.379 días × 7 horas): temporal, santoral, conmemoraciones, primeras Vísperas, Triduo Sacro, Martirologio en Prima.
 - Latín, bilingüe (latín/español) o español. En móvil, el bilingüe intercala verso a verso; en pantalla ancha, dos columnas.
 - Temas: Pergamino, Azul claro, Noche. Tamaño de letra, números de versículo, pantalla encendida durante el rezo.
 - Funciona sin conexión tras la primera carga (service worker con auto-actualización).
@@ -29,7 +29,7 @@ Breviario Romano, edición típica de 1962 (rúbricas del Código de 1960). Hora
 3. Abrir la URL en el móvil → «Añadir a pantalla de inicio».
 
 ## Regenerar años posteriores
-`tools/generar.sh 2029-01-01 2029-12-31` (Linux/WSL con perl + python3). Usa el motor de Divinum Officium para calcular el oficio y reempaqueta `data/`.
+`tools/generar.sh 2036-01-01 2036-12-31` (Linux/WSL con perl + python3). Usa el motor de Divinum Officium para calcular el oficio y reempaqueta `data/`. Después, sobre la carpeta de la aplicación y en este orden: `tools/aplicar_traduccion.py` (traducción propia), `tools/titulos.py` (títulos de los días en español) y `tools/publicar.py` (versión y service worker). Las líneas latinas que no estén aún en `trad/` (p. ej. las fechas del Martirologio de cada año nuevo, que llevan el año y la luna) quedan sin traducir hasta incorporarlas a `trad/`.
 
 ## Fuentes
 Textos y cómputo litúrgico: proyecto Divinum Officium (github.com/DivinumOfficium, licencia MIT).

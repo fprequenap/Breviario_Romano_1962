@@ -103,6 +103,8 @@ main{max-width:1040px;margin:0 auto;padding:14px 14px 30px}
 .reader-head h2{font-family:Capitalis,serif;font-weight:600;font-size:30px;letter-spacing:.06em;color:var(--rubric);margin:0;line-height:1.1}
 .reader-head .es{font-style:italic;color:var(--muted);font-size:.9em}
 .reader-head .feast{margin-top:6px;font-size:.92em}
+.feast-es{font-style:italic;color:var(--muted,#6b6257);line-height:1.3;margin:-2px 0 4px}
+.day-head .feast-es{font-size:1.02em}.reader-head .feast-es{font-size:.86em;margin-top:2px}
 .reader-head .vt{font-size:.82em;color:var(--rubric);font-style:italic}
 .hournav{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none;margin-bottom:6px}
 .hournav::-webkit-scrollbar{display:none}
@@ -139,9 +141,16 @@ h3{font-family:Capitalis,serif;font-weight:600;letter-spacing:.05em;color:var(--
 h3:first-child{margin-top:4px}
 .row{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--rule)}
 .row:last-child{border-bottom:0}
-.row label{flex:1}
+.row label{flex:1;min-width:0}
 .row label.sw{flex:none}
 .row small{display:block;color:var(--muted);font-size:.8em;line-height:1.3}
+.tbtn{background:var(--chip);border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:system-ui,sans-serif;font-size:16px;font-variant-numeric:tabular-nums;color:var(--ink);cursor:pointer;white-space:nowrap}
+.tbtn span{color:var(--accent);margin-left:4px}
+.ted{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 2px 14px;border-bottom:1px solid var(--rule)}
+.ted[hidden]{display:none}
+.ted .btn{padding:8px 14px}
+.ted label{font-family:system-ui,sans-serif;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.ted select{font-size:17px;padding:6px 8px;border-radius:8px;border:1px solid var(--rule);background:var(--chip);color:var(--ink);font-variant-numeric:tabular-nums}
 .row input[type=time]{background:var(--chip);border:1px solid var(--rule);border-radius:8px;padding:4px 8px;font-family:system-ui,sans-serif;font-variant-numeric:tabular-nums}
 .sw{position:relative;width:46px;height:28px;flex:none}
 .sw input{opacity:0;width:0;height:0}
@@ -277,8 +286,9 @@ function dayHeader(s,d){
   return `<div class="day-head">
     <div class="date">${longDate(s)}</div>
     <div class="feast">${esc(name)}</div>
+    ${d.te?`<div class="feast-es">${esc(d.te)}</div>`:''}
     ${cls?`<div class="cls">${esc(cls)}${CLS[cls]?' · '+CLS[cls]:''}</div>`:''}
-    ${d.tp?`<div class="tp">${esc(d.tp)}</div>`:''}
+    ${d.tp?`<div class="tp">${esc(d.tp)}${d.tpe?`<br><i>${esc(d.tpe)}</i>`:''}</div>`:''}
     <div class="colordot"><i style="background:${cc}"></i>Color ${cn}</div>
   </div>`;
 }
@@ -302,7 +312,7 @@ async function viewHoy(s){
     const nxt=isToday&&h.k===nextHour().h.k&&nextHour().day===s;
     html+=`<li class="${nxt?'next':''} ${done?'done':''}"><a href="#/d/${s}/${h.k}">
       <span class="t">${S.times[h.k]}</span>
-      <span class="n">${h.la}<small>${h.es!==h.la?h.es:''}${h.es!==h.la&&h.k==='V'&&d.vt?' · ':''}${h.k==='V'&&d.vt?esc(splitTitle(d.vt).name):''}</small></span>
+      <span class="n">${h.la}<small>${h.es!==h.la?h.es:''}${h.es!==h.la&&h.k==='V'&&d.vt?' · ':''}${h.k==='V'&&d.vt?esc(d.vte||splitTitle(d.vt).name):''}</small></span>
       <span class="st">${done?'✓':''}</span>
       <svg class="bell ${S.on[h.k]?'':'off'}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.4-2h-4.8A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.8V3.5a1.5 1.5 0 0 0-3 0v.7A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
     </a></li>`;
@@ -342,7 +352,7 @@ async function viewHora(s,k){
   $app.innerHTML='<div class="loading">Preparando la hora…</div>';
   const d=await getDay(s); if(!d||!d[k]){$app.innerHTML='<div class="card">Oficio no disponible para esta fecha.</div>';return}
   const secs=await getSections(d[k]);
-  const {name}=splitTitle(k==='V'&&d.vt?d.vt:d.title);
+  const {name}=splitTitle(k==='V'&&d.vt?d.vt:d.title); const nameEs=k==='V'&&d.vt?d.vte:d.te;
   const i=HOURS.indexOf(h);
   const prev=i>0?`#/d/${s}/${HOURS[i-1].k}`:`#/d/${addDays(s,-1)}/C`;
   const next=i<6?`#/d/${s}/${HOURS[i+1].k}`:`#/d/${addDays(s,1)}/L`;
@@ -350,6 +360,7 @@ async function viewHora(s,k){
     <div class="reader-head"><h2>Ad ${h.k==='V'?'Vesperas':h.k==='C'?'Completorium':h.la}</h2>
       <div class="es">${h.es} · ${longDate(s)}</div>
       <div class="feast">${esc(name)}</div>
+      ${nameEs?`<div class="feast-es">${esc(nameEs)}</div>`:''}
       ${k==='V'&&d.vt?'<div class="vt">I Vísperas del día siguiente</div>':''}
     </div>
     <div class="modebar">${[['la','Latín'],['bi','Latín · Español'],['es','Español']].map(([m,l])=>`<button data-m="${m}" class="${S.mode===m?'on':''}">${l}</button>`).join('')}</div>
@@ -388,7 +399,7 @@ function bell(){
     const t=ctx.currentTime;strike(t,392);strike(t+1.6,392);strike(t+3.2,392);}catch(e){}
 }
 async function fireAlarm(h){
-  const s=today(); let feast='';try{const d=await getDay(s);if(d)feast=splitTitle(h.k==='V'&&d.vt?d.vt:d.title).name}catch(e){}
+  const s=today(); let feast='';try{const d=await getDay(s);if(d)feast=(h.k==='V'&&d.vt?d.vte:d.te)||splitTitle(h.k==='V'&&d.vt?d.vt:d.title).name}catch(e){}
   const title=`${h.la} · ${h.es} — ${S.times[h.k]}`; const url=`#/d/${s}/${h.k}`;
   if(S.sound)bell();
   if('Notification' in window&&Notification.permission==='granted'){
@@ -422,9 +433,13 @@ function viewAvisos(){
   setTab('avisos');setTop('Avisos <small>Horæ</small>',false);
   let html=`<h3>Horario</h3><div class="card" style="padding:4px 14px">`;
   for(const h of HOURS){html+=`<div class="row"><label for="t${h.k}"><span style="font-family:Capitalis,serif;font-weight:600;font-size:19px">${h.la}</span> <small>${h.es!==h.la?h.es:"&nbsp;"}</small></label>
-    <input type="time" id="t${h.k}" value="${S.times[h.k]}" data-k="${h.k}">
-    <label class="sw" title="Aviso"><input type="checkbox" data-on="${h.k}" ${S.on[h.k]?'checked':''}><span></span></label></div>`}
-  html+=`</div><div class="btns"><button class="btn alt" id="reset">Restablecer horario</button></div>
+    <button class="tbtn" data-edit="${h.k}" aria-label="Cambiar la hora de ${h.es}">${S.times[h.k]} <span aria-hidden="true">✎</span></button>
+    <label class="sw" title="Aviso"><input type="checkbox" data-on="${h.k}" ${S.on[h.k]?'checked':''}><span></span></label></div>
+    <div class="ted" id="ed${h.k}" hidden><label>Hora <select data-hh="${h.k}">${[...Array(24)].map((_,i)=>{const v=String(i).padStart(2,'0');return`<option ${S.times[h.k].slice(0,2)===v?'selected':''}>${v}</option>`}).join('')}</select></label>
+      <label>Minutos <select data-mm="${h.k}">${[...Array(60)].map((_,i)=>{const v=String(i).padStart(2,'0');return`<option ${S.times[h.k].slice(3,5)===v?'selected':''}>${v}</option>`}).join('')}</select></label>
+      <button class="btn" data-ok="${h.k}">Guardar</button><button class="btn alt" data-no="${h.k}">Cancelar</button></div>`}
+  html+=`</div><p class="note" style="margin:6px 4px 0">Pulse la hora de cada Oficio para cambiarla. El horario de serie puede recuperarse en cualquier momento.</p>
+  <div class="btns"><button class="btn alt" id="reset">Restablecer horario de serie</button></div>
   <h3>Alarmas del teléfono</h3><div class="card prose">
     <p>El método fiable, también con la aplicación cerrada: añadir las siete horas al calendario del teléfono como eventos diarios con alarma.</p>
     <div class="btns"><button class="btn" id="ics">Añadir al calendario (.ics)</button></div>
@@ -437,9 +452,12 @@ function viewAvisos(){
     <div class="btns"><button class="btn alt" id="test">Probar aviso</button></div>
   </div>`;
   $app.innerHTML=html;
-  $app.querySelectorAll('input[type=time]').forEach(i=>i.onchange=()=>{if(!i.value)return;S.times[i.dataset.k]=i.value;
-    // mantener orden cronológico
-    S.save();scheduleNext()});
+  const close=()=>$app.querySelectorAll('.ted').forEach(e=>e.hidden=true);
+  $app.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const e=$app.querySelector('#ed'+b.dataset.edit);const was=!e.hidden;close();e.hidden=was});
+  $app.querySelectorAll('[data-no]').forEach(b=>b.onclick=close);
+  $app.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{const k=b.dataset.ok;
+    S.times[k]=$app.querySelector(`[data-hh="${k}"]`).value+':'+$app.querySelector(`[data-mm="${k}"]`).value;
+    S.save();scheduleNext();viewAvisos();toast('Hora de '+HOURS.find(h=>h.k===k).es+': '+S.times[k]+'. Si usa el calendario del teléfono, vuelva a importar el archivo .ics.',7000)});
   $app.querySelectorAll('[data-on]').forEach(i=>i.onchange=()=>{S.on[i.dataset.on]=i.checked;S.save();scheduleNext()});
   $app.querySelector('#reset').onclick=()=>{HOURS.forEach(h=>S.times[h.k]=h.def);S.save();scheduleNext();viewAvisos()};
   $app.querySelector('#ics').onclick=downloadIcs;
@@ -510,7 +528,7 @@ route(); scheduleNext();
 
 /* ============ Service worker con auto-actualización ============ */
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=d25a2e53').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
+  navigator.serviceWorker.register('sw.js?v=15cfaa2c').then(reg=>{reg.update();setInterval(()=>reg.update(),3600e3)});
   let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
   navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.url)location.hash=e.data.url.replace(/^.*#/,'#')});
 }

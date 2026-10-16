@@ -10,3 +10,4 @@ import datetime,sys
 d=datetime.date.fromisoformat('$DESDE');h=datetime.date.fromisoformat('$HASTA')
 while d<=h: print(d.strftime('%m-%d-%Y')); d+=datetime.timedelta(1)" | xargs -P 4 -n 1 ./render1.sh
 python3 parse.py && python3 package.py
+# Después, con los datos copiados en la app: aplicar_traduccion.py, titulos.py y publicar.py (en ese orden).
