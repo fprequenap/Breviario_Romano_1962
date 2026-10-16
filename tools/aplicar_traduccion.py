@@ -7,6 +7,7 @@
 - "mariano": como "lineas", pero solo en secciones usadas exclusivamente en
   oficios de la Santísima Virgen o que La nombran expresamente (versículos compartidos con el Común de
   Vírgenes: allí minúscula, aquí mayúscula reverencial).
+Incluye el Martirologio (sesiones 5-7): una sección sólo se reconstruye si todas sus líneas están traducidas.
 Idempotente. Uso: aplicar_traduccion.py <raiz_app>"""
 import json, re, glob, os, sys
 ROOT = sys.argv[1] if len(sys.argv) > 1 else '.'
@@ -107,7 +108,6 @@ for f in sorted(glob.glob(os.path.join(ROOT, 'data', 's-*.json')), key=lambda p:
     K = int(re.findall(r'(\d+)\.json', f)[0])
     for n, (la, es) in enumerate(secs):
         mar = (K * CHUNK + n) in MARIAN or _marian_text(K * CHUNK + n, la)
-        if la.startswith('<b>Martyrologium'): continue  # bloque propio (sesiones 5-7)
         L = la.split('<br>'); E = es.split('<br>') if es else []
         T = [tr(l, mar) for l in L]
         if all(t is None for t in T): continue
