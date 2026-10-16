@@ -29,7 +29,7 @@ Breviario Romano, edición típica de 1962 (rúbricas del Código de 1960). Hora
 3. Abrir la URL en el móvil → «Añadir a pantalla de inicio».
 
 ## Regenerar años posteriores
-`tools/generar.sh 2036-01-01 2036-12-31` (Linux/WSL con perl + python3). Usa el motor de Divinum Officium para calcular el oficio y reempaqueta `data/`. Después, sobre la carpeta de la aplicación y en este orden: `tools/aplicar_traduccion.py` (traducción propia), `tools/titulos.py` (títulos de los días en español) y `tools/publicar.py` (versión y service worker). Las líneas latinas que no estén aún en `trad/` (p. ej. las fechas del Martirologio de cada año nuevo, que llevan el año y la luna) quedan sin traducir hasta incorporarlas a `trad/`.
+`tools/generar.sh 2036-01-01 2036-12-31` (Linux/WSL con perl + python3). Usa el motor de Divinum Officium para calcular el oficio y reempaqueta `data/`. Después, sobre la carpeta de la aplicación y en este orden: `tools/aplicar_traduccion.py` (traducción propia), `tools/corregir_luna.py` (Luna de los años bisiestos, que Divinum Officium calcula mal del 24 al 29 de febrero), `tools/titulos.py` (títulos de los días en español) y `tools/publicar.py` (versión y service worker). Las líneas latinas que no estén aún en `trad/` (p. ej. las fechas del Martirologio de cada año nuevo, que llevan el año y la luna) quedan sin traducir hasta incorporarlas a `trad/`.
 
 ## Fuentes
 Textos y cómputo litúrgico: proyecto Divinum Officium (github.com/DivinumOfficium, licencia MIT).
