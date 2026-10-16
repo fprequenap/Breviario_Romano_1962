@@ -1,0 +1,21 @@
+{
+  "name": "Breviarium Romanum MCMLXII",
+  "short_name": "Breviarium",
+  "description": "Breviario Romano 1962 — Horas diurnas de Laudes a Completas, con avisos.",
+  "lang": "es",
+  "start_url": "./#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f5efe0",
+  "theme_color": "#1B3A5C",
+  "categories": ["books", "lifestyle"],
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ],
+  "shortcuts": [
+    {"name": "Rezar ahora", "url": "./#/rezar", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]},
+    {"name": "Avisos", "url": "./#/avisos", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
+  ]
+}
